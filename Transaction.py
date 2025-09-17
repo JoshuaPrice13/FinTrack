@@ -3,6 +3,20 @@ from typing import Optional
 #Local imports
 from TransactionType import TransactionType
 
+"""
+
+For Controller:
+    Create an instance of this class for each Transaction Save
+    Example Instance in controller side
+        Transaction T1 = new Transaction(
+                                        TransactionType.INCOME,
+                                        1500.00,
+                                        date(2024, 9, 15),
+                                        "Salary",
+                                        description="Monthly salary",
+                                        categorized_by_ai=False)
+"""
+
 
 class Transaction:
     """
