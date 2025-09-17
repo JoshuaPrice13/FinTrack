@@ -1,10 +1,7 @@
 from datetime import date
 from typing import Optional
-#Local imports
-from TransactionType import TransactionType
-
-#TransactionType Class
 from enum import Enum
+#TransactionType Class
 
 """"
 
