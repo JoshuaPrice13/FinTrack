@@ -1,7 +1,7 @@
 # Transaction Model - Developer Reference
 
 ## Quick Overview
-Three-file system: `TransactionType.py` (enum), `Transaction.py` (main class), `test.py` (usage example).
+`TransactionType.py` (enum), `Transaction.py` (main class)
 
 ## TransactionType Enum
 ```python
