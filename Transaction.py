@@ -6,6 +6,11 @@ from TransactionType import TransactionType
 """
 For Controller:
     Create an instance of this class for each Transaction Save
+    Needed libraries:
+        from datetime import date
+        from Transaction import Transaction
+        from TransactionType import TransactionType
+        
     Example Instance in controller side
         Transaction T1 = Transaction(
                                         TransactionType.INCOME,
