@@ -3,6 +3,25 @@ from typing import Optional
 #Local imports
 from TransactionType import TransactionType
 
+#TransactionType Class
+from enum import Enum
+
+""""
+
+For Controller:
+    When creating Transaction object, use this class for the proper argument expected.
+    Example passed argument from controller side:
+        TransactionType(SPENDING)
+
+"""
+class TransactionType(Enum):
+    SPENDING = 0
+    INCOME = 1
+
+
+
+#Transaction Class
+
 """
 For Controller:
     Create an instance of this class for each Transaction Save
