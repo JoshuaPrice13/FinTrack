@@ -3,6 +3,51 @@ from typing import Optional
 #Local imports
 from TransactionType import TransactionType
 
+#TransactionType Class
+from enum import Enum
+
+""""
+
+For Controller:
+    When creating Transaction object, use this class for the proper argument expected.
+    Example passed argument from controller side:
+        TransactionType(SPENDING)
+
+"""
+class TransactionType(Enum):
+    SPENDING = 0
+    INCOME = 1
+
+
+
+#Transaction Class
+
+"""
+For Controller:
+    Create an instance of this class for each Transaction Save
+    Needed libraries:
+        from datetime import date
+        from Transaction import Transaction
+        from TransactionType import TransactionType
+        
+    Example Instance in controller side
+        Transaction T1 = Transaction(
+                                        TransactionType.INCOME,
+                                        1500.00,
+                                        date(2024, 9, 15),
+                                        "Salary",
+                                        description="Monthly salary",
+                                        categorized_by_ai=False)
+
+        Transaction t2 = Transaction(
+                                    TransactionType.SPENDING,
+                                    150.00,
+                                    date(2024, 9, 15),
+                                    "FastFood",
+                                    description="Monthly salary",
+                                    categorized_by_ai=False
+    )
+"""
 
 class Transaction:
     """
@@ -80,7 +125,6 @@ class Transaction:
         """Developer representation of the transaction."""
         return (f"Transaction(type={self.transaction_type}, price={self.price}, "
                 f"date={self.date}, category='{self.category}')")
-    
 
     @property
     def is_income(self) -> bool:
@@ -91,26 +135,3 @@ class Transaction:
     def is_spending(self) -> bool:
         """Check if transaction is spending."""
         return self.transaction_type == TransactionType.SPENDING
-    
-
-
-if __name__ == "__main__":
-    t1 = Transaction(
-        TransactionType.SPENDING, 
-        25.99, 
-        date(2024, 9, 16), 
-        "Food"
-    )
-    t2 = Transaction(
-        TransactionType.INCOME,
-        1500.00,
-        date(2024, 9, 15),
-        "Salary",
-        description="Monthly salary",
-        categorized_by_ai=False
-    )
-    
-    print(t1)  # Spending: $25.99 - Food (2024-09-16)
-    print(repr(t2))  # Income: $1500.00 - Salary (2024-09-15)
-    print(f"Is income: {t2.is_income}")
-
