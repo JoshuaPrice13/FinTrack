@@ -1,10 +1,8 @@
 from datetime import date
 from typing import Optional
-#Local imports
-from TransactionType import TransactionType
+from enum import Enum
 
 #TransactionType Class
-from enum import Enum
 
 """"
 
@@ -135,3 +133,4 @@ class Transaction:
     def is_spending(self) -> bool:
         """Check if transaction is spending."""
         return self.transaction_type == TransactionType.SPENDING
+    
