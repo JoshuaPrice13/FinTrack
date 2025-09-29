@@ -1,6 +1,6 @@
 from datetime import date
 from Transaction import Transaction
-#from Transaction import TransactionType
+#from Transaction import TransactionType.
 
 from datetime import date
 from typing import List, Optional
