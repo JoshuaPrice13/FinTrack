@@ -2,13 +2,16 @@ import csv
 from datetime import datetime, date
 from typing import List, Dict, Optional, Any
 from pathlib import Path
+from Transaction import Transaction
 
-class CSVTransactionReader:
+
+
+class Transaction_File_Processor:
     """
     A class to read transaction data from various CSV formats and prepare
     Transaction objects using intelligent column mapping.
     """
-    
+
     def __init__(self, file_path: str):
         """
         Initialize the CSV reader with a file path.
@@ -21,6 +24,8 @@ class CSVTransactionReader:
             ValueError: If the file is not a CSV file
         """
         self.file_path = Path(file_path)
+        
+        
         if not self.file_path.exists():
             raise FileNotFoundError(f"File not found: {file_path}")
         if not self.file_path.suffix.lower() == '.csv':
@@ -533,6 +538,7 @@ class CSVTransactionReader:
         prepared_data = self.prepare_transaction_data()
         transactions = []
         
+        
         for data in prepared_data:
             transaction = Transaction(
                 transaction_type=data['transaction_type'],
@@ -543,6 +549,5 @@ class CSVTransactionReader:
                 categorized_by_ai=data['categorized_by_ai']
             )
             transactions.append(transaction)
-        
         return transactions
-
+   
