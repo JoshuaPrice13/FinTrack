@@ -1,0 +1,4 @@
+FinTrack_Database
+*.db
+*.sqlite
+__pycache__/
