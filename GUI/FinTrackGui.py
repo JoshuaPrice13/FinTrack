@@ -1,6 +1,7 @@
 import customtkinter as ctk
 import LoginWindow as lw
 import AddUserWindow as auw
+import ResetPasswordWindow as rpw
 
 #Currently using passed-in controller for the login window
 #Delete that once Authentication class is ready
@@ -13,7 +14,7 @@ class FinTrackGui(ctk.CTk):
     Attributes:
         geometry: The size of the window
         title: The window title
-        login_frame: The login window, first to appear when the app is opened
+        currentFrame: The current frame being displayed.
     """
     def __init__(self, controller):
         """
@@ -35,7 +36,7 @@ class FinTrackGui(ctk.CTk):
         #self.minsize(30000, 30000)
         self.title("FinTrack")
 
-        self.frames = [lw.LoginWindow, auw.AddUserWindow]
+        self.frames = [lw.LoginWindow, auw.AddUserWindow, rpw.ResetPasswordWindow, rpw.SubmitNewPasswordWindow]
 
         self.controller = controller
         
@@ -55,8 +56,6 @@ class FinTrackGui(ctk.CTk):
             (Mandatory)
             c: The index of the frame class to switch to (in self.frames).
         """
-        #if(self.currentFrame is not None):
-        print("Switching frames")
         oldFrame = self.currentFrame
         self.currentFrame = None
         if oldFrame is not None:

@@ -29,31 +29,33 @@ class LoginWindow(ctk.CTkFrame):
 
         """
         super().__init__(master, **kwargs)
-        self.frame = ctk.CTk()
+        #self.frame = ctk.CTk()
         self.configure(height=700, width=700)
-        self.frame.title("FinTrack Login")
         self.controller = controller
         self.app = app
 
         #label1 = ctk.CTkLabel(self.frame, text="Username")
         #label1.pack()
 
-        self.usernameField = ctk.CTkEntry(self.frame, placeholder_text="Username")
+        self.usernameField = ctk.CTkEntry(self, placeholder_text="Username")
         self.usernameField.pack(padx = 20, pady = 10)
 
         #label2 = ctk.CTkLabel(self.frame, text="Password")
         #label2.pack()
 
-        self.passwordField = ctk.CTkEntry(self.frame, placeholder_text="Password", show="*")
+        self.passwordField = ctk.CTkEntry(self, placeholder_text="Password", show="*")
         self.passwordField.pack(padx = 20, pady = 10)
 
-        self.login_button = ctk.CTkButton(self.frame, text="Login", command=self.login)
+        self.login_button = ctk.CTkButton(self, text="Login", command=self.login)
         self.login_button.pack(padx = 40, pady = 20)
 
-        self.reset_button = ctk.CTkButton(self.frame, text = "Forgot Password", command=lambda: self.app.switch_frame(1))
-        self.reset_button.pack(padx = 40, pady = 20)
+        self.newUserButton = ctk.CTkButton(self, text = "Add User", command=lambda: self.app.switch_frame(1))
+        self.newUserButton.pack(padx = 40, pady = 20)
 
-        self.frame.mainloop()
+        self.resetButton = ctk.CTkButton(self, text = "Reset Password", command=lambda: self.app.switch_frame(2))
+        self.resetButton.pack(padx = 40, pady = 20)
+
+        #self.frame.mainloop()
 
     def authenticate(self):
         """
