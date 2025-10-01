@@ -1,10 +1,10 @@
 from datetime import date
 from Transaction import Transaction
-from TransactionType import TransactionType
+#from Transaction import TransactionType.
 
 from datetime import date
 from typing import List, Optional
-from transaction import Transaction, TransactionType
+from Transaction import Transaction, TransactionType
 
 
 class TransactionController:
@@ -49,4 +49,20 @@ class TransactionController:
         return [t for t in self.transactions if t.category.lower() == category.lower()]
 
 if __name__ == "__main__":
-  print("test")
+    t1 = Transaction(
+        TransactionType.SPENDING, 
+        25.99, 
+        date(2024, 9, 16), 
+        "Food"
+    )
+    t2 = Transaction(
+        TransactionType.INCOME,
+        1500.00,
+        date(2024, 9, 15),
+        "Salary",
+        description="Monthly salary",
+        categorized_by_ai=False
+    )
+    
+    print(t1)
+    print(t2)
