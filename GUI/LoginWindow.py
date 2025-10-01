@@ -1,5 +1,6 @@
 import tkinter as tk
 import customtkinter as ctk
+#from GUITESTS import DummyController as dc
 #import Authentication as auth
 #Currently using passed-in controller; change that once Authentication class is ready
 
@@ -15,7 +16,7 @@ class LoginWindow(ctk.CTkFrame):
         controller: Controller object to perform authentication requests
     """
 
-    def __init__(self, master, control, **kwargs):
+    def __init__(self, master, controller, app, **kwargs):
         """
         Initializes the frame by setting controller and creating text fields
         and button.
@@ -31,17 +32,26 @@ class LoginWindow(ctk.CTkFrame):
         self.frame = ctk.CTk()
         self.configure(height=700, width=700)
         self.frame.title("FinTrack Login")
+        self.controller = controller
+        self.app = app
 
-        self.usernameField = ctk.CTkEntry(self.frame)
+        #label1 = ctk.CTkLabel(self.frame, text="Username")
+        #label1.pack()
+
+        self.usernameField = ctk.CTkEntry(self.frame, placeholder_text="Username")
         self.usernameField.pack(padx = 20, pady = 10)
 
-        self.passwordField = ctk.CTkEntry(self.frame)
+        #label2 = ctk.CTkLabel(self.frame, text="Password")
+        #label2.pack()
+
+        self.passwordField = ctk.CTkEntry(self.frame, placeholder_text="Password", show="*")
         self.passwordField.pack(padx = 20, pady = 10)
 
-        self.button = ctk.CTkButton(self.frame, text="Login", command=self.login)
-        self.button.pack(padx = 40, pady = 20)
+        self.login_button = ctk.CTkButton(self.frame, text="Login", command=self.login)
+        self.login_button.pack(padx = 40, pady = 20)
 
-        self.controller = control
+        self.reset_button = ctk.CTkButton(self.frame, text = "Forgot Password", command=lambda: self.app.switch_frame(1))
+        self.reset_button.pack(padx = 40, pady = 20)
 
         self.frame.mainloop()
 
@@ -58,7 +68,11 @@ class LoginWindow(ctk.CTkFrame):
             pwd = self.passwordField.get()
 
             #Replace the below line with the function from the Authenticate class, whenever it is ready
-            return self.controller.validateCredentials(user, pwd)
+            #Errors if values are not in list or values are empty strings
+            return self.controller.authenticate_user(user, pwd)
+        else:
+            print("No controller found")
+            return False
 
     def login(self):
         """

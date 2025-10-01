@@ -16,7 +16,7 @@ class DummyController():
      def __init__(self):
          print("Created controller")
 
-     def validateCredentials(self, username, password):
+     def authenticate_user(self, username, password):
          """
          Takes passed-in username and password, checks them against a
          database (here just arrays) of saved values

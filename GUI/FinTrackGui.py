@@ -1,5 +1,6 @@
 import customtkinter as ctk
 import LoginWindow as lw
+import AddUserWindow as auw
 
 #Currently using passed-in controller for the login window
 #Delete that once Authentication class is ready
@@ -25,9 +26,52 @@ class FinTrackGui(ctk.CTk):
                         Will be removed with later updates.
         """
         super().__init__()
-        self.geometry("3000x3000")
+
+        #Setting themes for the app...
+        ctk.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
+        ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "dark-blue", "green"
+
+        self.geometry("300x300")
         #self.minsize(30000, 30000)
         self.title("FinTrack")
+
+        self.frames = [lw.LoginWindow, auw.AddUserWindow]
+
+        self.controller = controller
         
-        self.login_frame = lw.LoginWindow(self, controller)
-        self.login_frame.pack()
+        self.currentFrame = None
+        self.currentFrame = lw.LoginWindow(self, self.controller, app=self)
+        self.currentFrame.pack()
+
+        #self.switch_frame(0)
+        #self.currentFrame = lw.LoginWindow(self, controller)
+        #self.currentFrame.pack()
+
+    def switch_frame(self, new_frame):
+        """
+        Destroys the current frame and replaces it with a new one.
+
+        Args:
+            (Mandatory)
+            c: The index of the frame class to switch to (in self.frames).
+        """
+        #if(self.currentFrame is not None):
+        print("Switching frames")
+        oldFrame = self.currentFrame
+        self.currentFrame = None
+        if oldFrame is not None:
+            oldFrame.destroy()
+        self.currentFrame = self.frames[new_frame](self, self.controller, app = self)
+        self.currentFrame.pack()
+
+    def switch(self, new_frame):
+        """
+        Destroys the current frame and replaces it with a new one.
+
+        Args:
+            (Mandatory)
+            new_frame: The frame to replace the current one.
+        """
+        self.currentFrame.destroy()
+        self.currentFrame = new_frame(self, self.controller)
+        self.currentFrame.pack()
