@@ -1,6 +1,7 @@
 #Test file
 import FinTrackGui as ftg
 import LoginWindow as lw
+#import controller here to use instead of DummyController
 
 class DummyController():
      """
@@ -9,12 +10,58 @@ class DummyController():
      but the validateCredentials function is what's really being tested here.
      """
 
+     current_user = None
+
      usernames = ["gtroast", "gmczalen", "acallist", "bvote"]
 
      passwords = ["1234", "1029384756", "crushbass4ever", "r0b0ts"]
 
      def __init__(self):
          print("Created controller")
+
+     def check_username_exists(self, username):
+         """
+         Dummy method to simulate checking if a username exists
+         """
+         return username in self.usernames
+
+     def set_current_user(self, username):
+         """
+         Dummy method to simulate setting the current user
+         """
+         if username in self.usernames:
+             self.current_user = username
+             print(f"Current user set to {username}")
+             return True
+         else:
+             print("Username not found")
+             return False
+
+     def add_user(self, username, password, sq1, sq1a, sq2, sq2a):
+         """
+         Dummy method to simulate adding a user
+         """
+         if username in self.usernames:
+             print("Username already exists")
+             return False
+         else:
+             self.usernames.append(username)
+             self.passwords.append(password)
+             print(f"Added user {username}")
+             print("Security Question 1: " + sq1
+                   + " Answer: " + sq1a
+                   + " Security Question 2: " + sq2
+                   + " Answer: " + sq2a)
+             return True
+         
+     def reset_password(self, new_password):
+            """
+            Dummy method to simulate resetting a password
+            """
+            index = self.usernames.index(self.current_user)
+            self.passwords[index] = new_password
+            print(f"Password for user {self.current_user} has been reset")
+            return True
 
      def authenticate_user(self, username, password):
          """
@@ -27,9 +74,9 @@ class DummyController():
          Returns
             boolean: True if the values exist and match indexes, false otherwise
          """
-         ui = self.usernames.index(username)
-         pi = self.passwords.index(password)
-         if ui == pi:
+         if (username in self.usernames
+              and password in self.passwords
+              and (self.usernames.index(username) == self.passwords.index(password))):
              return True
          else:
              return False

@@ -6,14 +6,20 @@ import customtkinter as ctk
 
 class LoginWindow(ctk.CTkFrame):
     """
-    A window with login fields to authenticate a user. Uses a controller for
+    A frame ow with login fields to authenticate a user. Uses a controller for
     logic functions to preserve MVC architecture.
 
     Attributes:
-        frame: The frame to hold the login widgets
-        usernameField: Text entry box to receive the username
-        passwordField: Text entry box to receive the password
-        controller: Controller object to perform authentication requests
+        controller: The controller instance for handling logic.
+        app: The main application instance for frame switching.
+        usernameField: The entry field for the username.
+        passwordField: The entry field for the password.
+        login_button: The button to submit the login form.
+        newUserButton: The button to navigate to the Add User frame.
+        resetButton: The button to navigate to the Reset Password frame.
+    Methods:
+        authenticate(): Authenticates the user using the controller.
+        login(): Handles the login process and frame switching upon success.
     """
 
     def __init__(self, master, controller, app, **kwargs):
@@ -25,37 +31,36 @@ class LoginWindow(ctk.CTkFrame):
             (Mandatory)
             master: The frame this one belongs to
             control: The controller
+            app: The main application instance for frame switching
+            (Optional)
             **kwargs: Any extra arguments to be passed to the super function
 
         """
         super().__init__(master, **kwargs)
-        #self.frame = ctk.CTk()
-        self.configure(height=700, width=700)
+        self.configure(height=900, width=1000)
         self.controller = controller
         self.app = app
 
-        #label1 = ctk.CTkLabel(self.frame, text="Username")
-        #label1.pack()
+        label1 = ctk.CTkLabel(self, font=("Helvetica", 40), text="Login")
+        label1.pack(pady = (20, 10))
 
-        self.usernameField = ctk.CTkEntry(self, placeholder_text="Username")
+        self.failedLoginLabel = ctk.CTkLabel(self, font=("Arial", 16), text="Login failed; invalid username or password", text_color="red")
+
+        self.usernameField = ctk.CTkEntry(self, width = 300, height = 40, placeholder_text="Username", font=("Arial", 16))
         self.usernameField.pack(padx = 20, pady = 10)
 
-        #label2 = ctk.CTkLabel(self.frame, text="Password")
-        #label2.pack()
-
-        self.passwordField = ctk.CTkEntry(self, placeholder_text="Password", show="*")
+        self.passwordField = ctk.CTkEntry(self, width = 300, height = 40, placeholder_text="Password", font=("Arial", 16), show="*")
         self.passwordField.pack(padx = 20, pady = 10)
 
-        self.login_button = ctk.CTkButton(self, text="Login", command=self.login)
-        self.login_button.pack(padx = 40, pady = 20)
+        self.loginButton = ctk.CTkButton(self, text="Login", command=self.login)
+        self.loginButton.pack(padx = 40, pady = (20, 5))
 
-        self.newUserButton = ctk.CTkButton(self, text = "Add User", command=lambda: self.app.switch_frame(1))
-        self.newUserButton.pack(padx = 40, pady = 20)
+        self.newUserButton = ctk.CTkButton(self, fg_color = "transparent", text = "Add User", command=lambda: self.app.switch_frame(1))
+        self.newUserButton.pack(padx = 40, pady = 5)
 
-        self.resetButton = ctk.CTkButton(self, text = "Reset Password", command=lambda: self.app.switch_frame(2))
-        self.resetButton.pack(padx = 40, pady = 20)
+        self.resetButton = ctk.CTkButton(self, fg_color = "transparent", text = "Reset Password", command=lambda: self.app.switch_frame(6))
+        self.resetButton.pack(padx = 40, pady = 5)
 
-        #self.frame.mainloop()
 
     def authenticate(self):
         """
@@ -68,9 +73,6 @@ class LoginWindow(ctk.CTkFrame):
         if self.controller:
             user = self.usernameField.get()
             pwd = self.passwordField.get()
-
-            #Replace the below line with the function from the Authenticate class, whenever it is ready
-            #Errors if values are not in list or values are empty strings
             return self.controller.authenticate_user(user, pwd)
         else:
             print("No controller found")
@@ -78,9 +80,11 @@ class LoginWindow(ctk.CTkFrame):
 
     def login(self):
         """
-        Calls authenticate() and deals with the results (currently just prints result)
+        Calls authenticate() and deals with the results
         """
         if self.authenticate():
-            print("Login success!")
+            self.controller.set_current_user(self.usernameField.get())
+            self.app.switch_frame(4) #Switch to home page on successful login
         else:
+            self.failedLoginLabel.pack(pady = (0, 10)) #Show the failed login label
             print("Login rejected; try again")

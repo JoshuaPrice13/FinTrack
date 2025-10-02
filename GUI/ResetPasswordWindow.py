@@ -1,4 +1,42 @@
 import customtkinter as ctk
+import CustomCTkParts as custom
+
+class EnterUsernameWindow(ctk.CTkFrame):
+
+    def __init__(self, master, control, app, **kwargs):
+        super().__init__(master, **kwargs)
+        #self.frame = ctk.CTk()
+        self.configure(height=300, width=200)
+        #self.frame.title("FinTrack Enter Username")
+        self.controller = control
+        self.app = app
+
+        label1 = ctk.CTkLabel(self, text="Enter Username") #Change text font and size later
+        label1.pack()
+
+        self.usernameField = ctk.CTkEntry(self, placeholder_text="Username")
+        self.usernameField.pack(padx = 20, pady = 10)
+
+        self.userNotExistLabel = ctk.CTkLabel(self, font=("Arial", 12), text="Username does not exist", text_color="red")
+
+        submitButton = ctk.CTkButton(self, text="Submit Username", command=lambda: self.submit_username())
+        submitButton.pack(padx = 40, pady = 20)
+
+        backButton = ctk.CTkButton(self, fg_color = "transparent", text="Back to Login", command=lambda: custom.logout(self.app, self.controller))
+        backButton.pack(padx = 40, pady = 5)
+
+
+    def submit_username(self):
+        #Get all the data from the fields and submit them to the controller
+        user = self.usernameField.get()
+
+        if self.controller.check_username_exists(user):
+            self.controller.set_current_user(user)
+            print("Username exists")
+            self.app.switch_frame(2)
+        else:
+            self.userNotExistLabel.pack() #Show the username does not exist label
+            print("Username does not exist")
 
 
 class ResetPasswordWindow(ctk.CTkFrame):
@@ -27,7 +65,9 @@ class ResetPasswordWindow(ctk.CTkFrame):
         resetButton = ctk.CTkButton(self, text="Reset Password", command=lambda: self.submit_answers())
         resetButton.pack(padx = 40, pady = 20)
 
-        #self.frame.mainloop()
+        backButton = ctk.CTkButton(self, fg_color = "transparent", text="Back to Login", command=lambda: custom.logout(self.app, self.controller))
+        backButton.pack(padx = 40, pady = 5)
+
 
     def submit_answers(self):
         #Get all the data from the fields and submit them to the controller
@@ -72,7 +112,8 @@ class SubmitNewPasswordWindow(ctk.CTkFrame):
             return False
 
         #controller.submit_new_password(newPwd) !!!!!!!
+        self.controller.reset_password(newPwd)
 
-        self.app.switch_frame(0) #Switch back to login window after submission
+        custom.logout(self.app, self.controller) #Switch back to login window after submission
 
         return True

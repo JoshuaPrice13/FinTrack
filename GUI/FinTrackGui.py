@@ -2,6 +2,8 @@ import customtkinter as ctk
 import LoginWindow as lw
 import AddUserWindow as auw
 import ResetPasswordWindow as rpw
+import HomePage as hp
+import AddTransactionFrame as atf
 
 #Currently using passed-in controller for the login window
 #Delete that once Authentication class is ready
@@ -32,17 +34,28 @@ class FinTrackGui(ctk.CTk):
         ctk.set_appearance_mode("Dark")  # Modes: "System" (standard), "Dark", "Light"
         ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "dark-blue", "green"
 
-        self.geometry("300x300")
+        self.geometry("500x500")
         #self.minsize(30000, 30000)
         self.title("FinTrack")
 
-        self.frames = [lw.LoginWindow, auw.AddUserWindow, rpw.ResetPasswordWindow, rpw.SubmitNewPasswordWindow]
+        '''
+        * For reference:
+        * Login = 0
+        * Add User = 1
+        * Reset Password = 2
+        * Submit New Password = 3
+        * Home Page = 4
+        * Add Transaction = 5
+        * Enter Username for Password Reset = 6
+        '''
+        self.frames = [lw.LoginWindow, auw.AddUserWindow, rpw.ResetPasswordWindow, rpw.SubmitNewPasswordWindow, hp.HomePage,
+                       atf.AddTransactionFrame, rpw.EnterUsernameWindow]
 
         self.controller = controller
         
         self.currentFrame = None
         self.currentFrame = lw.LoginWindow(self, self.controller, app=self)
-        self.currentFrame.pack()
+        self.currentFrame.pack(fill = "both", expand = True)
 
         #self.switch_frame(0)
         #self.currentFrame = lw.LoginWindow(self, controller)
@@ -61,7 +74,7 @@ class FinTrackGui(ctk.CTk):
         if oldFrame is not None:
             oldFrame.destroy()
         self.currentFrame = self.frames[new_frame](self, self.controller, app = self)
-        self.currentFrame.pack()
+        self.currentFrame.pack(fill = "both", expand = True)
 
     def switch(self, new_frame):
         """

@@ -1,5 +1,5 @@
 import customtkinter as ctk
-
+import CustomCTkParts as custom
 
 #So everything but the class name was AI added... not sure if it's good or not
 class AddUserWindow(ctk.CTkFrame):
@@ -53,7 +53,7 @@ class AddUserWindow(ctk.CTkFrame):
         self.addButton = ctk.CTkButton(self, text="Add User", command=lambda: self.submit_new_user())
         self.addButton.pack(padx = 40, pady = 20)
 
-        #self.frame.mainloop()
+        self.backButton = ctk.CTkButton(self, fg_color = "transparent", text="Back to Login", command=lambda: custom.logout(self.app, self.controller))
 
     def submit_new_user(self):
         #Get all the data from the fields and submit them to the controller
@@ -63,12 +63,7 @@ class AddUserWindow(ctk.CTkFrame):
         sq1a = self.sQ1AnswerField.get()
         sq2 = self.securityQuestion2Field.get()
         sq2a = self.sQ2AnswerField.get()
-        #Submit to controller here
-        print("New user: " + newUser
-              + "\nNew password: " + newPwd
-              + "\nSecurity Question 1: " + sq1
-              + "\nAnswer 1: " + sq1a
-              + "\nSecurity Question 2: " + sq2
-              + "\nAnswer 2: " + sq2a)
-        self.app.switch_frame(0)
-        return True
+
+        self.controller.add_user(newUser, newPwd, sq1, sq1a, sq2, sq2a)
+
+        custom.logout(self.app, self.controller)
