@@ -8,10 +8,15 @@ import AddTransactionTabs as att
 #Currently using passed-in controller for the login window
 #Delete that once Authentication class is ready
 
-class FinTrackGui(ctk.CTk):
+class FinTrackGuiForTests(ctk.CTk):
     """
     A CustomTkinter class that defines the GUI setup for FinTrack and facilitates
     switching between frames (windows).
+
+    NOTE: This is basically a duplicate of FinTrackGui.py for testing purposes.
+    Will be deleted later. Can be modified to add buttons to switch to any frame
+    for testing without having to log in.
+    DO NOT switch any code in any file other than this one.
 
     Attributes:
         geometry: The size of the window
@@ -52,10 +57,13 @@ class FinTrackGui(ctk.CTk):
                        att.AddTransactionTabs, rpw.EnterUsernameWindow]
 
         self.controller = controller
+
+        button = ctk.CTkButton(self, text="AddTransactionTabs", command=lambda: self.switch_frame(5))
+        button.pack()
         
         self.currentFrame = None
         self.currentFrame = lw.LoginWindow(self, self.controller, app=self)
-        self.currentFrame.pack(fill = "both", expand = True)
+        self.currentFrame.pack()
 
         #self.switch_frame(0)
         #self.currentFrame = lw.LoginWindow(self, controller)

@@ -6,7 +6,7 @@ import customtkinter as ctk
 
 class LoginWindow(ctk.CTkFrame):
     """
-    A frame ow with login fields to authenticate a user. Uses a controller for
+    A frame with login fields to authenticate a user. Uses a controller for
     logic functions to preserve MVC architecture.
 
     Attributes:
@@ -76,7 +76,7 @@ class LoginWindow(ctk.CTkFrame):
             return self.controller.authenticate_user(user, pwd)
         else:
             print("No controller found")
-            return False
+            return False #Error handle here in the future; this return can be confused with failed login
 
     def login(self):
         """

@@ -1,7 +1,7 @@
 import customtkinter as ctk
 
 """
-Class used to create custom parts for the GUI that are used in multiple files. Not
+File used to create custom parts for the GUI that are used in multiple files. Not
 declared as an instance of a class, just a collection of functions.
 """
 

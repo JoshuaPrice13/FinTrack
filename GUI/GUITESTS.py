@@ -1,6 +1,7 @@
 #Test file
 import FinTrackGui as ftg
 import LoginWindow as lw
+import FinTrackGuiForTests as ftgft
 #import controller here to use instead of DummyController
 
 class DummyController():
@@ -83,5 +84,6 @@ class DummyController():
 
 if __name__ == "__main__":
     controller = DummyController()
-    app = ftg.FinTrackGui(controller)
+    #app = ftg.FinTrackGui(controller) #Use this for actual gui
+    app = ftgft.FinTrackGuiForTests(controller) #Use this for testing purposes
     app.mainloop()

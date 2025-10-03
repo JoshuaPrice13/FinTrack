@@ -2,12 +2,21 @@ import customtkinter as ctk
 import CustomCTkParts as custom
 
 class EnterUsernameWindow(ctk.CTkFrame):
+    """
+    A CustomTkinter class that provides a form for users to enter their username.
+
+    Attributes:
+        controller: The controller instance for handling logic.
+        app: The main application instance for frame switching.
+        usernameField: The entry field for the username.
+        userNotExistLabel: A label to indicate that the entered username does not exist.
+    Methods:
+        submit_username(): Checks if the entered username exists and navigates to the next frame if it does.
+    """
 
     def __init__(self, master, control, app, **kwargs):
         super().__init__(master, **kwargs)
-        #self.frame = ctk.CTk()
         self.configure(height=300, width=200)
-        #self.frame.title("FinTrack Enter Username")
         self.controller = control
         self.app = app
 
@@ -27,6 +36,10 @@ class EnterUsernameWindow(ctk.CTkFrame):
 
 
     def submit_username(self):
+        """
+        Checks entered username and navigates to next frame in sequence if username exists.
+        Otherwise, shows error message.
+        """
         #Get all the data from the fields and submit them to the controller
         user = self.usernameField.get()
 
@@ -40,6 +53,19 @@ class EnterUsernameWindow(ctk.CTkFrame):
 
 
 class ResetPasswordWindow(ctk.CTkFrame):
+    """
+    A CustomTkinter class that provides a form for users to answer their
+    security questions.
+
+    Attributes:
+        controller: The controller instance for handling logic.
+        app: The main application instance for frame switching.
+        sQ1AnswerField: The entry field for the answer to security question 1.
+        sQ2AnswerField: The entry field for the answer to security question 2.
+    Methods:
+        submit_answers(): Submits security question answers to the controller for verification.
+    """
+
     def __init__(self, master, control, app, **kwargs):
         super().__init__(master, **kwargs)
         #self.frame = ctk.CTk()
@@ -47,7 +73,7 @@ class ResetPasswordWindow(ctk.CTkFrame):
         self.controller = control
         self.app = app
 
-        label1 = ctk.CTkLabel(self, text="Reset Password") #Change text font and size later
+        label1 = ctk.CTkLabel(self, text="Security Questions") #Change text, font, and size later
         label1.pack()
 
         question1 = ctk.CTkLabel(self, text="Get security question 1 from database")
@@ -70,18 +96,36 @@ class ResetPasswordWindow(ctk.CTkFrame):
 
 
     def submit_answers(self):
+        """
+        Submits security question answers to the controller for verification.
+        Navigates to next frame in sequence if answers are correct.
+        Otherwise, shows error message.
+        """
         #Get all the data from the fields and submit them to the controller
         sq1 = self.sQ1AnswerField.get()
         sq2 = self.sQ2AnswerField.get()
 
         #controller.reset_password(sq1, sq2) !!!!!!!
 
-        self.app.switch_frame(3) #Switch back to login window after submission
+        self.app.switch_frame(3) #Switch to submit new password window on successful verification
+        #Need to add error handling for incorrect answers later
 
         return True
     
 
 class SubmitNewPasswordWindow(ctk.CTkFrame):
+    """
+    A CustomTkinter class that provides a form for users to submit a new password.
+
+    Attributes:
+        controller: The controller instance for handling logic.
+        app: The main application instance for frame switching.
+        newPasswordField: The entry field for the new password.
+        repeatNewPasswordField: The entry field for re-entering the new password.
+    Methods:
+        submit_new_password(): Submits new password to the controller for updating in the database.
+    """
+
     def __init__(self, master, control, app, **kwargs):
         super().__init__(master, **kwargs)
         #self.frame = ctk.CTk()
@@ -102,7 +146,13 @@ class SubmitNewPasswordWindow(ctk.CTkFrame):
         submitButton = ctk.CTkButton(self, text="Submit New Password", command=lambda: self.submit_new_password())
         submitButton.pack(padx = 40, pady = 20)
 
+        #Maybe add back to login button?
+
     def submit_new_password(self):
+        """
+        Submits new password to the controller for updating in the database.
+        Navigates back to login frame upon success. If failed, shows error message.
+        """
         #Get all the data from the fields and submit them to the controller
         newPwd = self.newPasswordField.get()
         repeatNewPwd = self.repeatNewPasswordField.get()
