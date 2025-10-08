@@ -10,7 +10,11 @@ def create_database():
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        security_question_1 TEXT NOT NULL,
+        security_answer_1 TEXT NOT NULL,
+        security_question_2 TEXT NOT NULL,
+        security_answer_2 TEXT NOT NULL
     )
     """)
 
@@ -35,13 +39,16 @@ def create_database():
     connection.close()
     print("Database and tables created successfully!")
 
-def add_user(username, password):
-    """Add a new user to the database"""
+def add_user(username, password, sq1, sa1, sq2, sa2):
+    """Add a new user to the database with security questions"""
     connection = sqlite3.connect("FinTrack_Database")
     cursor = connection.cursor()
     
     try:
-        cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+        cursor.execute(
+            "INSERT INTO users (username, password, security_question_1, security_answer_1, security_question_2, security_answer_2) VALUES (?, ?, ?, ?, ?, ?)", 
+            (username, password, sq1, sa1, sq2, sa2)
+        )
         connection.commit()
         print(f"User '{username}' added successfully.")
     except sqlite3.IntegrityError:
