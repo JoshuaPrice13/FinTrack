@@ -1,9 +1,9 @@
 import customtkinter as ctk
-import LoginWindow as lw
-import AddUserWindow as auw
-import ResetPasswordWindow as rpw
-import HomePage as hp
-import AddTransactionTabs as att
+from LoginFrames import LoginWindow as lw
+from LoginFrames import AddUserWindow as auw
+from LoginFrames import ResetPasswordWindow as rpw
+from ApplicationFrames import HomePage as hp
+from ApplicationFrames import AddTransactionTabs as att
 
 #Currently using passed-in controller for the login window
 #Delete that once Authentication class is ready
@@ -17,7 +17,25 @@ class FinTrackGui(ctk.CTk):
         geometry: The size of the window
         title: The window title
         currentFrame: The current frame being displayed.
+        frames: A list of frame classes for easy switching.
+
+    Methods:
+        switch_frame(new_frame): Destroys the current frame and replaces it with a new one.
     """
+
+    '''
+        * For reference:
+        * Login = 0
+        * Add User = 1
+        * Reset Password = 2
+        * Submit New Password = 3
+        * Home Page = 4
+        * Add Transaction = 5
+        * Enter Username for Password Reset = 6
+    '''
+    frames = [lw.LoginWindow, auw.AddUserWindow, rpw.ResetPasswordWindow, rpw.SubmitNewPasswordWindow, hp.HomePage,
+                       att.AddTransactionTabs, rpw.EnterUsernameWindow]
+
     def __init__(self, controller):
         """
         Initializes the GUI by creating the necessary frames and setting the login frame
@@ -38,28 +56,12 @@ class FinTrackGui(ctk.CTk):
         #self.minsize(30000, 30000)
         self.title("FinTrack")
 
-        '''
-        * For reference:
-        * Login = 0
-        * Add User = 1
-        * Reset Password = 2
-        * Submit New Password = 3
-        * Home Page = 4
-        * Add Transaction = 5
-        * Enter Username for Password Reset = 6
-        '''
-        self.frames = [lw.LoginWindow, auw.AddUserWindow, rpw.ResetPasswordWindow, rpw.SubmitNewPasswordWindow, hp.HomePage,
-                       att.AddTransactionTabs, rpw.EnterUsernameWindow]
-
         self.controller = controller
         
         self.currentFrame = None
         self.currentFrame = lw.LoginWindow(self, self.controller, app=self)
         self.currentFrame.pack(fill = "both", expand = True)
 
-        #self.switch_frame(0)
-        #self.currentFrame = lw.LoginWindow(self, controller)
-        #self.currentFrame.pack()
 
     def switch_frame(self, new_frame):
         """
@@ -72,6 +74,7 @@ class FinTrackGui(ctk.CTk):
         oldFrame = self.currentFrame
         self.currentFrame = None
         if oldFrame is not None:
+            oldFrame.pack_forget() # Added to fix issues with CTkScrollableFrame not being fully removed
             oldFrame.destroy()
         self.currentFrame = self.frames[new_frame](self, self.controller, app = self)
         self.currentFrame.pack(fill = "both", expand = True)

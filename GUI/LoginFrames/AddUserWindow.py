@@ -2,7 +2,7 @@ import customtkinter as ctk
 import CustomCTkParts as custom
 
 
-class AddUserWindow(ctk.CTkFrame):
+class AddUserWindow(ctk.CTkScrollableFrame):
     """
     A CustomTkinter class that provides a form for adding a new user.
 
@@ -66,6 +66,12 @@ class AddUserWindow(ctk.CTkFrame):
         self.addButton.pack(padx = 40, pady = 20)
 
         self.backButton = ctk.CTkButton(self, fg_color = "transparent", text="Back to Login", command=lambda: custom.logout(self.app, self.controller))
+        self.backButton.pack(padx = 40, pady = 10)
+
+        self.fillAllLabel = ctk.CTkLabel(self, text="*Please fill out all fields", text_color="red")
+        #Something is wrong with this one... Once I add it, it wrecks the LoginWindow layout when I return to it
+        #Okay, the issue is something else... maybe with the submit_new_user function?
+
 
     def submit_new_user(self):
         """
@@ -83,6 +89,9 @@ class AddUserWindow(ctk.CTkFrame):
         sq2 = self.securityQuestion2Field.get()
         sq2a = self.sQ2AnswerField.get()
 
-        self.controller.add_user(newUser, newPwd, sq1, sq1a, sq2, sq2a)
-
-        custom.logout(self.app, self.controller)
+        if newUser == "" or newPwd == "" or sq1 == "" or sq1a == "" or sq2 == "" or sq2a == "":
+            print("Please fill out all fields")
+            self.fillAllLabel.pack()
+        else:
+            self.controller.add_user(newUser, newPwd, sq1, sq1a, sq2, sq2a)
+            custom.logout(self.app, self.controller)

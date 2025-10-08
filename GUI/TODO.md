@@ -7,6 +7,10 @@ To Do:
 
 - Control panel/generic buttons for each page (maybe use CustomCTkParts.py for common buttons)
 
+To Integrate:
+- Current DummyController functions
+- How to find current user? Is it necessary?
+
 
 Dependencies:
 

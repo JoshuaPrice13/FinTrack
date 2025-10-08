@@ -1,6 +1,6 @@
 #Test file
 import FinTrackGui as ftg
-import LoginWindow as lw
+from LoginFrames import LoginWindow as lw
 import FinTrackGuiForTests as ftgft
 #import controller here to use instead of DummyController
 
@@ -17,8 +17,16 @@ class DummyController():
 
      passwords = ["1234", "1029384756", "crushbass4ever", "r0b0ts"]
 
+     categories = ["Food", "Rent", "Utilities", "Entertainment", "Miscellaneous"]
+
      def __init__(self):
          print("Created controller")
+
+     def get_categories(self):
+            """
+            Dummy method to simulate getting categories from database
+            """
+            return self.categories
 
      def check_username_exists(self, username):
          """
@@ -81,6 +89,14 @@ class DummyController():
              return True
          else:
              return False
+         
+     def add_transaction(self, transaction_type, price, transaction_date, category, description=None, categorized_by_ai=None):
+            """
+            Dummy method to simulate adding a transaction
+            """
+            print("Transaction added with the following details:")
+            print(f"Type: {transaction_type}, Price: {price}, Date: {transaction_date}, Category: {category}, Description: {description}, AI Categorized: {categorized_by_ai}")
+            return True
 
 if __name__ == "__main__":
     controller = DummyController()

@@ -44,8 +44,6 @@ class LoginWindow(ctk.CTkFrame):
         label1 = ctk.CTkLabel(self, font=("Helvetica", 40), text="Login")
         label1.pack(pady = (20, 10))
 
-        self.failedLoginLabel = ctk.CTkLabel(self, font=("Arial", 16), text="Login failed; invalid username or password", text_color="red")
-
         self.usernameField = ctk.CTkEntry(self, width = 300, height = 40, placeholder_text="Username", font=("Arial", 16))
         self.usernameField.pack(padx = 20, pady = 10)
 
@@ -60,6 +58,9 @@ class LoginWindow(ctk.CTkFrame):
 
         self.resetButton = ctk.CTkButton(self, fg_color = "transparent", text = "Reset Password", command=lambda: self.app.switch_frame(6))
         self.resetButton.pack(padx = 40, pady = 5)
+
+        self.failedLoginLabel = ctk.CTkLabel(self, font=("Arial", 16), text="Login failed; invalid username or password", text_color="red")
+
 
 
     def authenticate(self):
@@ -87,4 +88,3 @@ class LoginWindow(ctk.CTkFrame):
             self.app.switch_frame(4) #Switch to home page on successful login
         else:
             self.failedLoginLabel.pack(pady = (0, 10)) #Show the failed login label
-            print("Login rejected; try again")
