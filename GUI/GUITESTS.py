@@ -1,8 +1,8 @@
 #Test file
 import FinTrackGui as ftg
-from LoginFrames import LoginWindow as lw
 import FinTrackGuiForTests as ftgft
 #import controller here to use instead of DummyController
+
 
 class DummyController():
      """
@@ -97,9 +97,19 @@ class DummyController():
             print("Transaction added with the following details:")
             print(f"Type: {transaction_type}, Price: {price}, Date: {transaction_date}, Category: {category}, Description: {description}, AI Categorized: {categorized_by_ai}")
             return True
+     
+     def process_transaction_file(self, file_path):
+            """
+            Dummy method to simulate processing a transaction file
+            """
+            print(f"Processing file: {file_path}")
+            return True
 
 if __name__ == "__main__":
     controller = DummyController()
     #app = ftg.FinTrackGui(controller) #Use this for actual gui
     app = ftgft.FinTrackGuiForTests(controller) #Use this for testing purposes
+
+    app.after(0, lambda:app.state('zoomed'))
+
     app.mainloop()

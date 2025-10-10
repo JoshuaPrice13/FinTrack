@@ -55,9 +55,10 @@ class FinTrackGuiForTests(ctk.CTk):
         ctk.set_default_color_theme("blue")  # Themes: "blue" (standard), "dark-blue", "green"
 
         self.geometry("500x500")
-        #self.minsize(30000, 30000)
+        self.minsize(500, 500)
         self.title("FinTrack")
 
+        
         self.controller = controller
 
         button = ctk.CTkButton(self, text="AddTransactionTabs", command=lambda: self.switch_frame(5))
