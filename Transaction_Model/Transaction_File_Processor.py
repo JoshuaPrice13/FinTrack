@@ -355,7 +355,7 @@ class Transaction_File_Processor:
     def get_all_transactions(self) -> List[Transaction]:
         return self.ALL_TRANSACTIONS
     
-    def _parse_transaction_type(self, value: str) -> 'TransactionType':
+    def _parse_transaction_type(self, value: str) -> 'int':
         """
         Parse transaction type from various string formats.
         
@@ -375,15 +375,13 @@ class Transaction_File_Processor:
         
         # Income indicators
         income_indicators = ['income', 'credit', 'deposit', 'in', 'positive', '+', '1']
-        # Spending indicators  
+        # Spending indicators
         spending_indicators = ['spending', 'expense', 'debit', 'withdrawal', 'out', 'negative', '-', '0']
-        
-        if value_lower in income_indicators or any(indicator in value_lower for indicator in income_indicators):
-            from enum import Enum
-            # Import TransactionType from the provided code
-            return TransactionType.INCOME
-        elif value_lower in spending_indicators or any(indicator in value_lower for indicator in spending_indicators):
-            return TransactionType.SPENDING
+
+        if value_lower in income_indicators:
+            return 1
+        elif value_lower in spending_indicators:
+            return 0
         else:
             raise ValueError(f"Cannot determine transaction type from value: {value}")
     
