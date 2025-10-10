@@ -1,0 +1,102 @@
+Transaction Date,Description,Amount,Balance,Category,Status
+2024-01-02,Starbucks Coffee #4521,15.47,2543.21,Dining,Posted
+2024-01-02,Shell Gas Station,45.00,2498.21,Transportation,Posted
+2024-01-03,Amazon Purchase,89.99,2408.22,Shopping,Posted
+2024-01-03,Salary Deposit,3500.00,5908.22,Income,Posted
+2024-01-04,Electric Company,125.50,5782.72,Utilities,Posted
+2024-01-04,Walmart Supercenter,67.34,5715.38,Groceries,Posted
+2024-01-05,Netflix Subscription,15.99,5699.39,Entertainment,Posted
+2024-01-05,Target Store #1234,43.21,5656.18,Shopping,Posted
+2024-01-06,McDonald's,12.35,5643.83,Dining,Posted
+2024-01-06,CVS Pharmacy,28.99,5614.84,Health,Posted
+2024-01-08,Rent Payment,1200.00,4414.84,Housing,Posted
+2024-01-08,Chipotle Mexican Grill,18.50,4396.34,Dining,Posted
+2024-01-09,Uber Ride,23.45,4372.89,Transportation,Posted
+2024-01-09,Whole Foods Market,87.63,4285.26,Groceries,Posted
+2024-01-10,Spotify Premium,10.99,4274.27,Entertainment,Posted
+2024-01-10,Best Buy Electronics,249.99,4024.28,Shopping,Posted
+2024-01-11,Panera Bread,14.76,4009.52,Dining,Posted
+2024-01-11,Mobile Phone Bill,75.00,3934.52,Utilities,Posted
+2024-01-12,Costco Wholesale,156.78,3777.74,Groceries,Posted
+2024-01-12,Dunkin Donuts,8.50,3769.24,Dining,Posted
+2024-01-15,ATM Withdrawal,100.00,3669.24,Cash,Posted
+2024-01-15,Subway Sandwich,11.25,3657.99,Dining,Posted
+2024-01-16,Home Depot,93.45,3564.54,Home Improvement,Posted
+2024-01-16,Starbucks Coffee #2341,16.23,3548.31,Dining,Posted
+2024-01-17,Freelance Payment,850.00,4398.31,Income,Posted
+2024-01-17,Internet Bill,69.99,4328.32,Utilities,Posted
+2024-01-18,Target Store #5678,54.32,4274.00,Shopping,Posted
+2024-01-18,Pizza Hut,27.89,4246.11,Dining,Posted
+2024-01-19,Gas Station Chevron,52.00,4194.11,Transportation,Posted
+2024-01-19,Apple App Store,4.99,4189.12,Entertainment,Posted
+2024-01-22,Kroger Grocery,72.45,4116.67,Groceries,Posted
+2024-01-22,Burger King,15.60,4101.07,Dining,Posted
+2024-01-23,Water Bill,45.30,4055.77,Utilities,Posted
+2024-01-23,Amazon Prime,14.99,4040.78,Shopping,Posted
+2024-01-24,Trader Joe's,63.89,3976.89,Groceries,Posted
+2024-01-24,Taco Bell,13.47,3963.42,Dining,Posted
+2024-01-25,Car Insurance,145.00,3818.42,Insurance,Posted
+2024-01-25,Panda Express,18.90,3799.52,Dining,Posted
+2024-01-26,Walgreens Pharmacy,35.67,3763.85,Health,Posted
+2024-01-26,Hulu Subscription,12.99,3750.86,Entertainment,Posted
+2024-01-29,Lowe's Home Center,118.50,3632.36,Home Improvement,Posted
+2024-01-29,Five Guys Burgers,21.34,3611.02,Dining,Posted
+2024-01-30,Gym Membership,49.99,3561.03,Health,Posted
+2024-01-30,Shell Gas Station,48.75,3512.28,Transportation,Posted
+2024-01-31,Safeway Grocery,81.23,3431.05,Groceries,Posted
+2024-02-01,Salary Deposit,3500.00,6931.05,Income,Posted
+2024-02-01,Olive Garden,45.60,6885.45,Dining,Posted
+2024-02-02,LinkedIn Premium,29.99,6855.46,Professional,Posted
+2024-02-02,Macy's Department,89.00,6766.46,Shopping,Posted
+2024-02-05,Starbucks Coffee #7821,17.35,6749.11,Dining,Posted
+2024-02-05,BP Gas Station,51.20,6697.91,Transportation,Posted
+2024-02-06,Publix Supermarket,74.56,6623.35,Groceries,Posted
+2024-02-06,Jimmy John's,12.89,6610.46,Dining,Posted
+2024-02-07,Electric Company,132.75,6477.71,Utilities,Posted
+2024-02-07,Nike Store,125.00,6352.71,Shopping,Posted
+2024-02-08,Rent Payment,1200.00,5152.71,Housing,Posted
+2024-02-08,Chick-fil-A,14.25,5138.46,Dining,Posted
+2024-02-09,Uber Eats Delivery,32.50,5105.96,Dining,Posted
+2024-02-09,Microsoft 365,9.99,5095.97,Software,Posted
+2024-02-12,Aldi Grocery,58.90,5037.07,Groceries,Posted
+2024-02-12,Wendy's,11.75,5025.32,Dining,Posted
+2024-02-13,Mobile Phone Bill,75.00,4950.32,Utilities,Posted
+2024-02-13,Old Navy Clothing,67.45,4882.87,Shopping,Posted
+2024-02-14,Flowers & Gifts,85.00,4797.87,Gifts,Posted
+2024-02-14,Romantic Dinner,156.80,4641.07,Dining,Posted
+2024-02-15,Freelance Payment,725.00,5366.07,Income,Posted
+2024-02-15,Gas Station Exxon,46.30,5319.77,Transportation,Posted
+2024-02-16,Home Depot,207.89,5111.88,Home Improvement,Posted
+2024-02-16,Subway,10.50,5101.38,Dining,Posted
+2024-02-19,Target RedCard,95.67,5005.71,Shopping,Posted
+2024-02-19,Domino's Pizza,28.99,4976.72,Dining,Posted
+2024-02-20,Internet Bill,69.99,4906.73,Utilities,Posted
+2024-02-20,Barnes & Noble,42.50,4864.23,Books,Posted
+2024-02-21,Walgreens,31.28,4832.95,Health,Posted
+2024-02-21,Sonic Drive-In,16.43,4816.52,Dining,Posted
+2024-02-22,Costco Wholesale,184.32,4632.20,Groceries,Posted
+2024-02-22,Starbucks,15.89,4616.31,Dining,Posted
+2024-02-23,Car Wash Service,25.00,4591.31,Transportation,Posted
+2024-02-23,YouTube Premium,11.99,4579.32,Entertainment,Posted
+2024-02-26,Kroger Grocery,79.45,4499.87,Groceries,Posted
+2024-02-26,Arby's,13.50,4486.37,Dining,Posted
+2024-02-27,Water Bill,42.80,4443.57,Utilities,Posted
+2024-02-27,Gap Store,78.90,4364.67,Shopping,Posted
+2024-02-28,Health Insurance,285.00,4079.67,Insurance,Posted
+2024-02-29,Cheesecake Factory,67.85,4011.82,Dining,Posted
+2024-03-01,Salary Deposit,3500.00,7511.82,Income,Posted
+2024-03-01,Shell Gas Station,49.60,7462.22,Transportation,Posted
+2024-03-04,Whole Foods,94.23,7368.00,Groceries,Posted
+2024-03-04,Panera Bread,15.70,7352.30,Dining,Posted
+2024-03-05,Electric Company,128.90,7223.40,Utilities,Posted
+2024-03-05,Best Buy,319.99,6903.41,Electronics,Posted
+2024-03-06,Rent Payment,1200.00,5703.41,Housing,Posted
+2024-03-06,KFC,19.45,5683.96,Dining,Posted
+2024-03-07,Uber Ride,18.75,5665.21,Transportation,Posted
+2024-03-07,Amazon Order,145.67,5519.54,Shopping,Posted
+2024-03-08,Trader Joe's,68.90,5450.64,Groceries,Posted
+2024-03-08,Chipotle,17.89,5432.75,Dining,Posted
+2024-03-11,Mobile Phone Bill,75.00,5357.75,Utilities,Posted
+2024-03-11,Starbucks,16.50,5341.25,Dining,Posted
+2024-03-12,CVS Pharmacy,43.21,5298.04,Health,Posted
+2024-03-12,Buffalo Wild Wings,38.90,5259.14,Dining,Posted

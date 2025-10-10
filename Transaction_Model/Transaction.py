@@ -1,21 +1,5 @@
 from datetime import date
 from typing import Optional
-from enum import Enum
-
-#TransactionType Class
-
-""""
-
-For Controller:
-    When creating Transaction object, use this class for the proper argument expected.
-    Example passed argument from controller side:
-        TransactionType(SPENDING)
-
-"""
-class TransactionType(Enum):
-    SPENDING = 0
-    INCOME = 1
-
 
 
 #Transaction Class
@@ -64,7 +48,7 @@ class Transaction:
     """
 
     def __init__(self, 
-                 transaction_type: TransactionType, 
+                 transaction_type: int, 
                  price: float, 
                  date: date, 
                  category: str, 
@@ -99,6 +83,9 @@ class Transaction:
         #Check for empty category
         if not category or not category.strip():
             raise ValueError("Category cannot be empty")
+        
+        if transaction_type == 0:
+            print("spending")
 
         #Mandatory
         self.transaction_type = transaction_type
@@ -116,7 +103,7 @@ class Transaction:
 
     def __str__(self) -> str:
         """String representation of the transaction."""
-        type_str = "Income" if self.transaction_type == TransactionType.INCOME else "Spending"
+        type_str = "Income" if self.transaction_type == 1 else "Spending"
         return f"{type_str}: ${self.price:.2f} - {self.category} ({self.date})"
     
     def __repr__(self) -> str:
@@ -127,10 +114,16 @@ class Transaction:
     @property
     def is_income(self) -> bool:
         """Check if transaction is income."""
-        return self.transaction_type == TransactionType.INCOME
+        if (self.transaction_type == 0):
+            return False
+        if (self.transaction_type == 1):
+            return True
     
     @property  
     def is_spending(self) -> bool:
         """Check if transaction is spending."""
-        return self.transaction_type == TransactionType.SPENDING
+        if (self.transaction_type == 0):
+            return True
+        if (self.transaction_type == 1):
+            return False
     

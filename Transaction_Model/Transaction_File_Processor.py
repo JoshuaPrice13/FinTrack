@@ -5,7 +5,6 @@ from pathlib import Path
 from Transaction import Transaction
 
 
-
 class Transaction_File_Processor:
     """
     A class to read transaction data from various CSV formats and prepare
@@ -34,9 +33,49 @@ class Transaction_File_Processor:
         self.raw_data: List[Dict[str, Any]] = []
         self.column_mapping: Dict[str, str] = {}
         self.columns: List[str] = []
+        self.ALL_TRANSACTIONS: List['Transaction'] = []
         
         # Define possible column name variations for mapping
         self.column_patterns = {
+            'date': [
+                # Date/Time variations (150+ from the synonym list)
+                'day', 'date', 'transaction_date', 'trans_date', 'txn_date', 'posting_date', 
+                'post_date', 'processed_date', 'process_date', 'settlement_date', 
+                'settle_date', 'value_date', 'effective_date', 'entry_date', 'booking_date', 
+                'cleared_date', 'completion_date', 'execution_date', 'activity_date', 
+                'occurrence_date', 'event_date', 'action_date', 'timestamp', 'datetime', 
+                'time_stamp', 'posted_on', 'processed_on', 'settled_on', 'cleared_on', 
+                'completed_on', 'executed_on', 'occurred_on', 'happened_on', 'made_on', 
+                'created_on', 'initiated_on', 'authorized_on', 'approved_on', 'confirmed_on', 
+                'recorded_on', 'logged_on', 'registered_on', 'entered_on', 'booked_on', 
+                'filed_on', 'submitted_on', 'requested_on', 'ordered_on', 'scheduled_on', 
+                'performed_on', 'conducted_on', 'transacted_on', 'debited_on', 
+                'charged_on', 'paid_on', 'received_on', 'sent_on', 'transferred_on', 
+                'withdrawn_on', 'deposited_on', 'issued_on', 'generated_on', 'produced_on', 
+                'published_on', 'released_on', 'delivered_on', 'dispatched_on', 'forwarded_on', 
+                'transmitted_on', 'communicated_on', 'reported_on', 'notified_on', 'alerted_on', 
+                'updated_on', 'modified_on', 'changed_on', 'edited_on', 'revised_on', 
+                'amended_on', 'adjusted_on', 'corrected_on', 'fixed_on', 'repaired_on', 
+                'restored_on', 'renewed_on', 'refreshed_on', 'synchronized_on', 'synced_on', 
+                'backed_up_on', 'archived_on', 'stored_on', 'saved_on', 'preserved_on', 
+                'maintained_on', 'kept_on', 'held_on', 'retained_on', 'secured_on', 
+                'protected_on', 'validated_on', 'verified_on', 'authenticated_on', 
+                'authorized_on', 'approved_on', 'accepted_on', 'rejected_on', 'declined_on', 
+                'denied_on', 'refused_on', 'cancelled_on', 'voided_on', 'reversed_on', 
+                'refunded_on', 'returned_on', 'recalled_on', 'retracted_on', 'undone_on', 
+                'rolled_back_on', 'backed_out_on', 'aborted_on', 'terminated_on', 'ended_on', 
+                'finished_on', 'closed_on', 'finalized_on', 'concluded_on', 'wrapped_up_on', 
+                'sealed_on', 'signed_on', 'endorsed_on', 'ratified_on', 'sanctioned_on', 
+                'permitted_on', 'allowed_on', 'enabled_on', 'activated_on', 'triggered_on', 
+                'started_on', 'begun_on', 'commenced_on', 'launched_on', 'opened_on', 
+                'create_date', 'creation_date', 'made_date', 'generated_date', 'issued_date', 
+                'posted_date', 'entered_date', 'recorded_date', 'logged_date', 'filed_date', 
+                'submitted_date', 'sent_date', 'received_date', 'processed_date', 'completed_date', 
+                'finished_date', 'closed_date', 'transaction_timestamp', 'txn_timestamp', 
+                'trans_timestamp', 'posting_timestamp', 'settlement_timestamp', 'clearing_timestamp', 
+                'completion_timestamp', 'purchase_date', 'sale_date', 'order_date', 'invoice_date'
+            ],
+
             'transaction_type': [
                 'transaction_type', 'type', 'transaction type', 'trans_type', 'txn_type',
                 'debit_credit', 'debit/credit', 'debit credit', 'dr_cr', 'dr/cr',
@@ -49,7 +88,7 @@ class Transaction_File_Processor:
         
             'price': [
                 # Amount/Value variations (150+ from the synonym list)
-                'amount', 'amt', 'value', 'sum', 'total', 'balance', 'price', 'cost', 
+                'Withdrawls','amount', 'amt', 'value', 'sum', 'total', 'price', 'cost', 
                 'expense', 'charge', 'fee', 'payment', 'receipt', 'debit', 'credit', 
                 'withdrawal', 'deposit', 'transfer', 'transaction_amount', 'trans_amount', 
                 'txn_amount', 'transaction_value', 'trans_value', 'txn_value', 
@@ -88,45 +127,6 @@ class Transaction_File_Processor:
                 'changed_amount', 'altered_amount', 'adjusted_amount', 'adapted_amount', 
                 'amended_amount', 'updated_amount', 'upgraded_amount', 'improved_amount', 
                 'enhanced_amount', 'optimized_amount', 'refined_amount', 'perfected_amount'
-            ],
-            
-            'date': [
-                # Date/Time variations (150+ from the synonym list)
-                'date', 'transaction_date', 'trans_date', 'txn_date', 'posting_date', 
-                'post_date', 'processed_date', 'process_date', 'settlement_date', 
-                'settle_date', 'value_date', 'effective_date', 'entry_date', 'booking_date', 
-                'cleared_date', 'completion_date', 'execution_date', 'activity_date', 
-                'occurrence_date', 'event_date', 'action_date', 'timestamp', 'datetime', 
-                'time_stamp', 'posted_on', 'processed_on', 'settled_on', 'cleared_on', 
-                'completed_on', 'executed_on', 'occurred_on', 'happened_on', 'made_on', 
-                'created_on', 'initiated_on', 'authorized_on', 'approved_on', 'confirmed_on', 
-                'recorded_on', 'logged_on', 'registered_on', 'entered_on', 'booked_on', 
-                'filed_on', 'submitted_on', 'requested_on', 'ordered_on', 'scheduled_on', 
-                'performed_on', 'conducted_on', 'transacted_on', 'debited_on', 'credited_on', 
-                'charged_on', 'paid_on', 'received_on', 'sent_on', 'transferred_on', 
-                'withdrawn_on', 'deposited_on', 'issued_on', 'generated_on', 'produced_on', 
-                'published_on', 'released_on', 'delivered_on', 'dispatched_on', 'forwarded_on', 
-                'transmitted_on', 'communicated_on', 'reported_on', 'notified_on', 'alerted_on', 
-                'updated_on', 'modified_on', 'changed_on', 'edited_on', 'revised_on', 
-                'amended_on', 'adjusted_on', 'corrected_on', 'fixed_on', 'repaired_on', 
-                'restored_on', 'renewed_on', 'refreshed_on', 'synchronized_on', 'synced_on', 
-                'backed_up_on', 'archived_on', 'stored_on', 'saved_on', 'preserved_on', 
-                'maintained_on', 'kept_on', 'held_on', 'retained_on', 'secured_on', 
-                'protected_on', 'validated_on', 'verified_on', 'authenticated_on', 
-                'authorized_on', 'approved_on', 'accepted_on', 'rejected_on', 'declined_on', 
-                'denied_on', 'refused_on', 'cancelled_on', 'voided_on', 'reversed_on', 
-                'refunded_on', 'returned_on', 'recalled_on', 'retracted_on', 'undone_on', 
-                'rolled_back_on', 'backed_out_on', 'aborted_on', 'terminated_on', 'ended_on', 
-                'finished_on', 'closed_on', 'finalized_on', 'concluded_on', 'wrapped_up_on', 
-                'sealed_on', 'signed_on', 'endorsed_on', 'ratified_on', 'sanctioned_on', 
-                'permitted_on', 'allowed_on', 'enabled_on', 'activated_on', 'triggered_on', 
-                'started_on', 'begun_on', 'commenced_on', 'launched_on', 'opened_on', 
-                'create_date', 'creation_date', 'made_date', 'generated_date', 'issued_date', 
-                'posted_date', 'entered_date', 'recorded_date', 'logged_date', 'filed_date', 
-                'submitted_date', 'sent_date', 'received_date', 'processed_date', 'completed_date', 
-                'finished_date', 'closed_date', 'transaction_timestamp', 'txn_timestamp', 
-                'trans_timestamp', 'posting_timestamp', 'settlement_timestamp', 'clearing_timestamp', 
-                'completion_timestamp', 'purchase_date', 'sale_date', 'order_date', 'invoice_date'
             ],
             
             'category': [
@@ -254,27 +254,13 @@ class Transaction_File_Processor:
                 'installed_account', 'established_account', 'created_account', 'formed_account', 
                 'developed_account', 'constructed_account', 'built_account', 'made_account', 
                 'produced_account', 'generated_account', 'manufactured_account', 'fabricated_account'
-            ],
-            
-            'balance': [
-                'balance', 'bal', 'running_balance', 'current_balance', 'available_balance', 
-                'ledger_balance', 'book_balance', 'account_balance', 'closing_balance', 
-                'opening_balance', 'starting_balance', 'ending_balance', 'final_balance', 
-                'initial_balance', 'beginning_balance', 'post_balance', 'pre_balance', 
-                'before_balance', 'after_balance', 'transaction_balance', 'trans_balance', 
-                'txn_balance', 'cleared_balance', 'pending_balance', 'hold_balance', 
-                'reserved_balance', 'blocked_balance', 'frozen_balance', 'locked_balance', 
-                'available_funds', 'usable_balance', 'spendable_balance', 'accessible_balance', 
-                'withdrawable_balance', 'liquid_balance', 'cash_balance', 'fund_balance', 
-                'money_balance', 'capital_balance', 'asset_balance', 'equity_balance', 
-                'net_balance', 'gross_balance', 'total_balance', 'sum_balance', 'aggregate_balance'
             ]
-        
         }
         
         # Read and analyze the CSV file
         self._read_csv_file()
         self._map_columns()
+        self.ALL_TRANSACTIONS = self.create_transactions()
     
     def _read_csv_file(self) -> None:
         """Read the CSV file and store raw data."""
@@ -318,34 +304,41 @@ class Transaction_File_Processor:
                     self.raw_data.append(cleaned_row)
     
     def _map_columns(self) -> None:
-        """Map CSV columns to expected Transaction fields."""
+    
         self.column_mapping = {}
-        
+
         # Convert column names to lowercase for matching
         lower_columns = [col.lower() for col in self.columns]
-        
-        for field, patterns in self.column_patterns.items():
+
+        # Loop through each CSV column and try to match it to a field
+        for i, csv_column in enumerate(self.columns):
+            csv_column_lower = csv_column.lower()
             matched = False
-            for pattern in patterns:
-                pattern_lower = pattern.lower()
-                
-                # Exact match first
-                if pattern_lower in lower_columns:
-                    original_column = self.columns[lower_columns.index(pattern_lower)]
-                    self.column_mapping[field] = original_column
-                    matched = True
-                    break
-                
-                # Partial match (contains pattern)
-                if not matched:
-                    for i, col in enumerate(lower_columns):
-                        if pattern_lower in col or col in pattern_lower:
-                            self.column_mapping[field] = self.columns[i]
-                            matched = True
-                            break
-                    
+            
+            # Try to match this CSV column to one of our expected fields
+            for field, patterns in self.column_patterns.items():
                 if matched:
                     break
+                    
+                for pattern in patterns:
+                    pattern_lower = pattern.lower()
+                    
+                    # Exact match first
+                    if csv_column_lower == pattern_lower:
+                        self.column_mapping[field] = csv_column
+                        matched = True
+                        break
+                    
+                    # Partial match (contains pattern)
+                    """
+                    elif pattern_lower in csv_column_lower or csv_column_lower in pattern_lower:
+                        self.column_mapping[field] = csv_column
+                        print(csv_column_lower, " = ", pattern_lower, " from ", csv_column)
+                        matched = True
+                        break
+                    """
+
+                        
     
     def get_columns(self) -> List[str]:
         """Return the list of columns found in the CSV file."""
@@ -358,6 +351,9 @@ class Transaction_File_Processor:
     def get_raw_data(self) -> List[Dict[str, Any]]:
         """Return the raw CSV data as a list of dictionaries."""
         return self.raw_data.copy()
+    
+    def get_all_transactions(self) -> List[Transaction]:
+        return self.ALL_TRANSACTIONS
     
     def _parse_transaction_type(self, value: str) -> 'TransactionType':
         """
@@ -427,6 +423,7 @@ class Transaction_File_Processor:
             raise ValueError(f"Cannot parse price from value: {value}")
     
     def _parse_date(self, value: str) -> date:
+        
         """
         Parse date from string, handling various formats.
         
@@ -444,17 +441,21 @@ class Transaction_File_Processor:
         
         # Common date formats to try
         date_formats = [
-            '%Y-%m-%d',      # 2024-09-15
-            '%m/%d/%Y',      # 09/15/2024
-            '%d/%m/%Y',      # 15/09/2024
-            '%m-%d-%Y',      # 09-15-2024
-            '%d-%m-%Y',      # 15-09-2024
-            '%Y/%m/%d',      # 2024/09/15
-            '%m/%d/%y',      # 09/15/24
-            '%d/%m/%y',      # 15/09/24
-            '%Y-%m-%d %H:%M:%S',  # With timestamp
-            '%m/%d/%Y %H:%M:%S',  # With timestamp
-        ]
+        '%Y-%m-%d',      # 2024-09-15
+        '%m/%d/%Y',      # 09/15/2024
+        '%d/%m/%Y',      # 15/09/2024
+        '%m-%d-%Y',      # 09-15-2024
+        '%d-%m-%Y',      # 15-09-2024
+        '%d-%b-%Y',      # 15-Aug-2024 (capitalized)
+        '%d-%B-%Y',      # 15-August-2024 (capitalized full month)
+        '%d-%b-%Y',      # base for lowercase/uppercase handling
+        '%d-%b-%Y',      # 15-Aug-2024
+        '%Y/%m/%d',      # 2024/09/15
+        '%m/%d/%y',      # 09/15/24
+        '%d/%m/%y',      # 15/09/24
+        '%Y-%m-%d %H:%M:%S',  # With timestamp
+        '%m/%d/%Y %H:%M:%S',  # With timestamp
+    ]
         
         for date_format in date_formats:
             try:
@@ -478,7 +479,7 @@ class Transaction_File_Processor:
         prepared_data = []
         
         # Check if we have the minimum required mappings
-        required_fields = ['transaction_type', 'price', 'date', 'category']
+        required_fields = ['date', 'price']
         missing_fields = [field for field in required_fields if field not in self.column_mapping]
         
         if missing_fields:
@@ -486,34 +487,42 @@ class Transaction_File_Processor:
         
         for row_index, row in enumerate(self.raw_data):
             try:
-                # Extract and parse required fields
-                transaction_type_raw = row.get(self.column_mapping['transaction_type'])
-                price_raw = row.get(self.column_mapping['price'])
-                date_raw = row.get(self.column_mapping['date'])
-                category_raw = row.get(self.column_mapping['category'])
+                # Extract required fields
+                my_price_raw = row.get(self.column_mapping['price'])
+                my_date_raw = row.get(self.column_mapping['date'])
                 
                 # Parse required fields
-                transaction_type = self._parse_transaction_type(transaction_type_raw)
-                price = self._parse_price(price_raw)
-                transaction_date = self._parse_date(date_raw)
-                category = category_raw.strip() if category_raw else None
-                
-                if not category:
-                    raise ValueError("Category cannot be empty")
+                my_price = self._parse_price(my_price_raw)
+                my_transaction_date = self._parse_date(my_date_raw)
                 
                 # Extract optional fields
-                description = None
+                my_description = None
                 if 'description' in self.column_mapping:
-                    description_raw = row.get(self.column_mapping['description'])
-                    description = description_raw.strip() if description_raw else None
+                    my_description_raw = row.get(self.column_mapping['description'])
+                    my_description = my_description_raw.strip() if my_description_raw else None
+
+                my_transaction_type = None
+                if 'transaction_type' in self.column_mapping:
+                    my_transaction_type_raw = row.get(self.column_mapping['transaction_type'])
+                    my_transaction_type = self._parse_transaction_type(my_transaction_type_raw) if my_transaction_type_raw else None
+                #if 'transaction_type = self._parse_transaction_type(transaction_type_raw)'
+
+                #category = 'Uncategorized'
+                my_category = 'uncategorized'
+                if 'category' in self.column_mapping:
+                    my_category_raw = row.get(self.column_mapping['category'])
+                    if (my_category_raw):
+                        my_category = my_category_raw.strip()
+                    else:
+                        my_category = 'uncategorized'
                 
                 # Prepare the data dictionary for Transaction constructor
                 transaction_data = {
-                    'transaction_type': transaction_type,
-                    'price': price,
-                    'date': transaction_date,
-                    'category': category,
-                    'description': description,
+                    'transaction_type': my_transaction_type,
+                    'price': my_price,
+                    'date': my_transaction_date,
+                    'category': my_category,
+                    'description': my_description,
                     'categorized_by_ai': None  # Default to None as per Transaction class
                 }
                 
@@ -549,5 +558,6 @@ class Transaction_File_Processor:
                 categorized_by_ai=data['categorized_by_ai']
             )
             transactions.append(transaction)
+            #print(transaction)
         return transactions
    

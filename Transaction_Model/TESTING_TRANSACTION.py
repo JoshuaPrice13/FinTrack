@@ -1,16 +1,16 @@
 from datetime import date
-from Transaction import Transaction, TransactionType
+from Transaction import Transaction
 #from TransactionType import TransactionType
 
 if __name__ == "__main__":
     t1 = Transaction(
-        TransactionType.SPENDING, 
+        0, 
         25.99, 
         date(2024, 9, 16), 
         "Food"
     )
     t2 = Transaction(
-        TransactionType.INCOME,
+        1,
         1500.00,
         date(2024, 9, 15),
         "Salary",
