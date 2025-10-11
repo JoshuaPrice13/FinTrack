@@ -31,9 +31,26 @@ def create_database():
     )
     """)
 
+    # Stocks table - stores user stock holdings
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS stocks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        stock_id TEXT NOT NULL,
+        amount INTEGER NOT NULL,
+        paid_value REAL NOT NULL,
+        purchase_date DATE DEFAULT CURRENT_DATE,
+        current_value REAL,
+        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+    """)
+
     # Create indexes for better performance
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(transaction_date)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_stocks_user_id ON stocks(user_id)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_stocks_stock_id ON stocks(stock_id)")
 
     connection.commit()
     connection.close()
