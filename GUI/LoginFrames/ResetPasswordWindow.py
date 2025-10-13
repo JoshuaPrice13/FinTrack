@@ -163,7 +163,9 @@ class SubmitNewPasswordWindow(ctk.CTkFrame):
             return False
 
         #controller.submit_new_password(newPwd) !!!!!!!
-        self.controller.reset_password(newPwd)
+       #self.controller.reset_password(newPwd)
+        self.controller.reset_password(self.controller.current_user, newPwd)
+
 
         custom.logout(self.app, self.controller) #Switch back to login window after submission
 
