@@ -84,7 +84,9 @@ class LoginWindow(ctk.CTkFrame):
         Calls authenticate() and deals with the results
         """
         if self.authenticate():
-            self.controller.set_current_user(self.usernameField.get())
+            self.controller.current_user = self.usernameField.get()
+            #self.controller.current_user(self.usernameField.get()) original tll i changed it
+            #self.controller.set_current_user(self.usernameField.get())
             self.app.switch_frame(4) #Switch to home page on successful login
         else:
             self.failedLoginLabel.pack(pady = (0, 10)) #Show the failed login label
