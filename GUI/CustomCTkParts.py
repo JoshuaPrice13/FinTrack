@@ -13,6 +13,7 @@ def logout(app, controller):
         app (FinTrackGui): The main application instance for frame switching.
         controller (Controller): The controller instance for handling logic.
     """
-    controller.current_user(None)
+    #controller.current_user(None)
+    controller.current_user = None
     # controller.set_current_user(None) original
     app.switch_frame(0)

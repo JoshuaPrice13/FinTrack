@@ -3,6 +3,7 @@ from datetime import datetime
 import FinTrackGui as ftg               # Your real GUI file
 from LoginFrames.LoginWindow import LoginWindow
 from cryptography.fernet import Fernet
+from ApplicationFrames.HomePage import HomePage
 
 class Controller:
 
@@ -13,7 +14,7 @@ class Controller:
         self.db_path = db_path
         self.current_user = None
 
-    
+
     def _connect(self):
         return sqlite3.connect(self.db_path)
 
