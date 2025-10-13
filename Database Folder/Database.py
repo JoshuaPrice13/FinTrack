@@ -10,7 +10,11 @@ def create_database():
     CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT UNIQUE NOT NULL,
-        password TEXT NOT NULL
+        password TEXT NOT NULL,
+        security_question_1 TEXT NOT NULL,
+        security_answer_1 TEXT NOT NULL,
+        security_question_2 TEXT NOT NULL,
+        security_answer_2 TEXT NOT NULL
     )
     """)
 
@@ -27,21 +31,41 @@ def create_database():
     )
     """)
 
+    # Stocks table - stores user stock holdings
+    cursor.execute("""
+    CREATE TABLE IF NOT EXISTS stocks (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        user_id INTEGER NOT NULL,
+        stock_id TEXT NOT NULL,
+        amount INTEGER NOT NULL,
+        paid_value REAL NOT NULL,
+        purchase_date DATE DEFAULT CURRENT_DATE,
+        current_value REAL,
+        last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    )
+    """)
+
     # Create indexes for better performance
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_transactions_user_id ON transactions(user_id)")
     cursor.execute("CREATE INDEX IF NOT EXISTS idx_transactions_date ON transactions(transaction_date)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_stocks_user_id ON stocks(user_id)")
+    cursor.execute("CREATE INDEX IF NOT EXISTS idx_stocks_stock_id ON stocks(stock_id)")
 
     connection.commit()
     connection.close()
     print("Database and tables created successfully!")
 
-def add_user(username, password):
-    """Add a new user to the database"""
+def add_user(username, password, sq1, sa1, sq2, sa2):
+    """Add a new user to the database with security questions"""
     connection = sqlite3.connect("FinTrack_Database")
     cursor = connection.cursor()
     
     try:
-        cursor.execute("INSERT INTO users (username, password) VALUES (?, ?)", (username, password))
+        cursor.execute(
+            "INSERT INTO users (username, password, security_question_1, security_answer_1, security_question_2, security_answer_2) VALUES (?, ?, ?, ?, ?, ?)", 
+            (username, password, sq1, sa1, sq2, sa2)
+        )
         connection.commit()
         print(f"User '{username}' added successfully.")
     except sqlite3.IntegrityError:
