@@ -178,7 +178,13 @@ class Controller:
         transactions = cursor.fetchall()
         conn.close()
         return transactions
-
+    def check_username_exists(self, username):
+        conn = self._connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT 1 FROM users WHERE username=?", (username,))
+        result = cursor.fetchone()
+        conn.close()
+        return result is not None
 
 if __name__ == "__main__":
     ctrl = Controller()

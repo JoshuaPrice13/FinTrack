@@ -44,7 +44,8 @@ class EnterUsernameWindow(ctk.CTkFrame):
         user = self.usernameField.get()
 
         if self.controller.check_username_exists(user):
-            self.controller.set_current_user(user)
+            self.controller.current_user = user
+           #self.controller.set_current_user(user) Changed
             print("Username exists")
             self.app.switch_frame(2)
         else:
