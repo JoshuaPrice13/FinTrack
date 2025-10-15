@@ -1,19 +1,18 @@
 import sqlite3
 from datetime import datetime
-import FinTrackGui as ftg               # Your real GUI file
+import FinTrackGui as ftg
 from LoginFrames.LoginWindow import LoginWindow
 from cryptography.fernet import Fernet
 from ApplicationFrames.HomePage import HomePage
 
 class Controller:
 
-    _encryption_key = b'mQ_B2m7F4RqqBQ74df4xPz6Qy4VeKVpBjhZYlvi6iF0=' # Replace with your real key
+    _encryption_key = b'mQ_B2m7F4RqqBQ74df4xPz6Qy4VeKVpBjhZYlvi6iF0='
     _cipher = Fernet(_encryption_key)
 
     def __init__(self, db_path="FinTrack_Database"):
         self.db_path = db_path
         self.current_user = None
-
 
     def _connect(self):
         return sqlite3.connect(self.db_path)
@@ -46,7 +45,7 @@ class Controller:
             conn.close()
 
     def create_database(self):
-        """Create database tables if they don't exist (reuse your create_database logic)"""
+        """Create database tables if they don't exist"""
         connection = self._connect()
         cursor = connection.cursor()
 
@@ -76,7 +75,7 @@ class Controller:
         )
         """)
 
-        # Stocks table (optional for now)
+        # Stocks table
         cursor.execute("""
         CREATE TABLE IF NOT EXISTS stocks (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -101,41 +100,65 @@ class Controller:
         connection.close()
         print("Database and tables created successfully!")
 
-    def add_user(self, username, password, sq1, sa1, sq2, sa2):
-        conn = self._connect()
-        cursor = conn.cursor()
-        try:
-            cursor.execute(
-                "INSERT INTO users (username, password, security_question_1, security_answer_1, security_question_2, security_answer_2) VALUES (?, ?, ?, ?, ?, ?)",
-                (username, password, sq1, sa1, sq2, sa2)
-            )
-            conn.commit()
-            print(f"User '{username}' added successfully.")
-            return True
-        except sqlite3.IntegrityError:
-            print(f"Username '{username}' already exists.")
-            return False
-        finally:
-            conn.close()
-
     def authenticate_user(self, username, password):
         conn = self._connect()
         cursor = conn.cursor()
-        cursor.execute("SELECT * FROM users WHERE username=? AND password=?", (username, password))
-        user = cursor.fetchone()
+        cursor.execute("SELECT password FROM users WHERE username=?", (username,))
+        result = cursor.fetchone()
         conn.close()
-        if user:
-            self.current_user = username
-            print(f"Login successful. Welcome, {username}!")
-            return True
-        else:
-            print("Invalid username or password.")
-            return False
+
+        if result:
+            stored_encrypted_password = result[0]
+            try:
+                decrypted_password = self.decrypt_text(stored_encrypted_password)
+                if decrypted_password == password:
+                    self.current_user = username
+                    print(f"Login successful. Welcome, {username}!")
+                    return True
+            except Exception as e:
+                print(f"Decryption error: {e}")
+
+        print("Invalid username or password.")
+        return False
+
+    def get_security_questions(self, username):
+        """Get security questions for a specific user"""
+        conn = self._connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT security_question_1, security_question_2 FROM users WHERE username=?", (username,))
+        result = cursor.fetchone()
+        conn.close()
+        
+        if result:
+            return {"question1": result[0], "question2": result[1]}
+        return None
+
+    def verify_security_answers(self, username, answer1, answer2):
+        """Verify both security answers for password recovery"""
+        conn = self._connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT security_answer_1, security_answer_2 FROM users WHERE username=?", (username,))
+        result = cursor.fetchone()
+        conn.close()
+        
+        if result:
+            try:
+                # Decrypt the stored answers
+                stored_answer1 = self.decrypt_text(result[0])
+                stored_answer2 = self.decrypt_text(result[1])
+                
+                # Compare case-insensitive
+                if stored_answer1.lower() == answer1.lower() and stored_answer2.lower() == answer2.lower():
+                    return True
+            except Exception as e:
+                print(f"Decryption error: {e}")
+        return False
 
     def reset_password(self, username, new_password):
         conn = self._connect()
         cursor = conn.cursor()
-        cursor.execute("UPDATE users SET password=? WHERE username=?", (new_password, username))
+        encrypted_password = self.encrypt_text(new_password)
+        cursor.execute("UPDATE users SET password=? WHERE username=?", (encrypted_password, username))
         conn.commit()
         conn.close()
         print(f"Password updated for user {username}.")
@@ -178,6 +201,7 @@ class Controller:
         transactions = cursor.fetchall()
         conn.close()
         return transactions
+
     def check_username_exists(self, username):
         conn = self._connect()
         cursor = conn.cursor()
@@ -224,12 +248,9 @@ if __name__ == "__main__":
         for t in transactions:
             print(t)
 
-            
     controller = Controller()
-    controller.create_database()  # Make sure DB and tables exist
+    controller.create_database()
 
-    app = ftg.FinTrackGui(controller)  # Pass real controller to GUI
-
-    app.after(0, lambda: app.state('zoomed'))  # Optional: start maximized
-
+    app = ftg.FinTrackGui(controller)
+    app.after(0, lambda: app.state('zoomed'))
     app.mainloop()
