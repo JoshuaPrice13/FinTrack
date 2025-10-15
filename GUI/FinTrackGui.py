@@ -64,13 +64,6 @@ class FinTrackGui(ctk.CTk):
 
 
     def switch_frame(self, new_frame):
-        """
-        Destroys the current frame and replaces it with a new one.
-
-        Args:
-            (Mandatory)
-            c: The index of the frame class to switch to (in self.frames).
-        """
         oldFrame = self.currentFrame
         self.currentFrame = None
         if oldFrame is not None:
@@ -78,3 +71,7 @@ class FinTrackGui(ctk.CTk):
             oldFrame.destroy()
         self.currentFrame = self.frames[new_frame](self, self.controller, app = self)
         self.currentFrame.pack(fill = "both", expand = True)
+    
+    # Load security questions when switching to ResetPasswordWindow (frame 2)
+        if new_frame == 2:
+            self.currentFrame.load_security_questions()

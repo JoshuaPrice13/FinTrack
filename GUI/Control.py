@@ -43,6 +43,37 @@ class Controller:
             return False
         finally:
             conn.close()
+            
+            
+    def get_security_questions(self, username):
+        """Get security questions for a specific user"""
+        conn = self._connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT security_question_1, security_question_2 FROM users WHERE username=?", (username,))
+        result = cursor.fetchone()
+        conn.close()
+    
+        if result:
+            return {"question1": result[0], "question2": result[1]}
+        return None
+
+    def verify_security_answers(self, username, answer1, answer2):
+        """Verify both security answers for password recovery"""
+        conn = self._connect()
+        cursor = conn.cursor()
+        cursor.execute("SELECT security_answer_1, security_answer_2 FROM users WHERE username=?", (username,))
+        result = cursor.fetchone()
+        conn.close()
+    
+        if result:
+            # Decrypt the stored answers
+            stored_answer1 = self.decrypt_text(result[0])
+            stored_answer2 = self.decrypt_text(result[1])
+        
+            # Compare case-insensitive
+            if stored_answer1.lower() == answer1.lower() and stored_answer2.lower() == answer2.lower():
+                return True
+        return False
 
     def create_database(self):
         """Create database tables if they don't exist"""

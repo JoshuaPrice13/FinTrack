@@ -61,40 +61,57 @@ class ResetPasswordWindow(ctk.CTkFrame):
     Attributes:
         controller: The controller instance for handling logic.
         app: The main application instance for frame switching.
+        question1Label: Label displaying security question 1.
+        question2Label: Label displaying security question 2.
         sQ1AnswerField: The entry field for the answer to security question 1.
         sQ2AnswerField: The entry field for the answer to security question 2.
+        incorrectAnswersLabel: Label to show when answers are incorrect.
     Methods:
+        load_security_questions(): Loads and displays the user's security questions.
         submit_answers(): Submits security question answers to the controller for verification.
     """
 
     def __init__(self, master, control, app, **kwargs):
         super().__init__(master, **kwargs)
-        #self.frame = ctk.CTk()
         self.configure(height=300, width=200)
         self.controller = control
         self.app = app
 
-        label1 = ctk.CTkLabel(self, text="Security Questions") #Change text, font, and size later
+        label1 = ctk.CTkLabel(self, text="Security Questions")
         label1.pack()
 
-        question1 = ctk.CTkLabel(self, text="Get security question 1 from database")
-        question1.pack()
+        # Question 1 label (will be populated with actual question)
+        self.question1Label = ctk.CTkLabel(self, text="")
+        self.question1Label.pack(pady=(10, 5))
 
         self.sQ1AnswerField = ctk.CTkEntry(self, placeholder_text="Answer")
-        self.sQ1AnswerField.pack(padx = 20, pady = 10)
+        self.sQ1AnswerField.pack(padx=20, pady=10)
 
-        question2 = ctk.CTkLabel(self, text="Get security question 2 from database")
-        question2.pack()
+        # Question 2 label (will be populated with actual question)
+        self.question2Label = ctk.CTkLabel(self, text="")
+        self.question2Label.pack(pady=(10, 5))
 
         self.sQ2AnswerField = ctk.CTkEntry(self, placeholder_text="Answer")
-        self.sQ2AnswerField.pack(padx = 20, pady = 10)
+        self.sQ2AnswerField.pack(padx=20, pady=10)
+
+        # Error label for incorrect answers
+        self.incorrectAnswersLabel = ctk.CTkLabel(self, font=("Arial", 12), text="Incorrect answers. Please try again.", text_color="red")
 
         resetButton = ctk.CTkButton(self, text="Reset Password", command=lambda: self.submit_answers())
-        resetButton.pack(padx = 40, pady = 20)
+        resetButton.pack(padx=40, pady=20)
 
-        backButton = ctk.CTkButton(self, fg_color = "transparent", text="Back to Login", command=lambda: custom.logout(self.app, self.controller))
-        backButton.pack(padx = 40, pady = 5)
+        backButton = ctk.CTkButton(self, fg_color="transparent", text="Back to Login", command=lambda: custom.logout(self.app, self.controller))
+        backButton.pack(padx=40, pady=5)
 
+    def load_security_questions(self):
+        """Load and display the user's security questions from the database"""
+        if self.controller.current_user:
+            questions = self.controller.get_security_questions(self.controller.current_user)
+            if questions:
+                self.question1Label.configure(text=questions['question1'])
+                self.question2Label.configure(text=questions['question2'])
+            else:
+                print("Could not load security questions")
 
     def submit_answers(self):
         """
@@ -102,16 +119,19 @@ class ResetPasswordWindow(ctk.CTkFrame):
         Navigates to next frame in sequence if answers are correct.
         Otherwise, shows error message.
         """
-        #Get all the data from the fields and submit them to the controller
         sq1 = self.sQ1AnswerField.get()
         sq2 = self.sQ2AnswerField.get()
 
-        #controller.reset_password(sq1, sq2) !!!!!!!
-
-        self.app.switch_frame(3) #Switch to submit new password window on successful verification
-        #Need to add error handling for incorrect answers later
-
-        return True
+        # Verify answers with the controller
+        if self.controller.verify_security_answers(self.controller.current_user, sq1, sq2):
+            print("Security answers correct")
+            self.incorrectAnswersLabel.pack_forget()  # Hide error label if shown
+            self.app.switch_frame(3)  # Switch to submit new password window
+            return True
+        else:
+            print("Security answers incorrect")
+            self.incorrectAnswersLabel.pack()  # Show error label
+            return False
     
 
 class SubmitNewPasswordWindow(ctk.CTkFrame):
